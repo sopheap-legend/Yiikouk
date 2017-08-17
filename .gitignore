@@ -1,0 +1,10 @@
+/nbproject/
+/assets/
+/protected/runtime/application.log
+/protected/runtime/
+/protected/runtime/*.log
+*.log
+/ximages
+/.idea/
+/.idea/workspace.xml
+protected/config/main.php
