@@ -32,7 +32,7 @@ class TreatmentController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','IllnessList','GetIllnessList'),
+				'actions'=>array('create','update','admin','IllnessList','GetIllnessList','Diagenose'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -150,7 +150,7 @@ class TreatmentController extends Controller
 		));
 	}
 
-	public function actionIllnessList()
+	public function actionIllnessList($visit_id,$doctor_id)
 	{
 		$cs = Yii::app()->clientScript;
 		$cs->scriptMap = array(
@@ -165,7 +165,9 @@ class TreatmentController extends Controller
 		);
 
 		Yii::app()->clientScript->scriptMap['*.js'] = false;
-		$data['treatment']= new treatment;
+		$data['illnesstype']= new IllnessType();
+		$data['visit_id'] = $visit_id;
+		$data['doctor_id'] = $doctor_id;
 
 		echo CJSON::encode(array(
 			'status' => 'render',
@@ -204,10 +206,79 @@ class TreatmentController extends Controller
 	public function actionGetIllnessList() {
 		if (isset($_GET['term'])) {
 			$term = trim($_GET['term']);
-			$ret['results'] = Treatment::getIllnessList($term); //PHP Example · ivaynberg/select2  http://bit.ly/10FNaXD got stuck serveral hoursss :|
+			$ret['results'] = IllnessType::getIllnessList($term); //PHP Example · ivaynberg/select2  http://bit.ly/10FNaXD got stuck serveral hoursss :|
 			echo CJSON::encode($ret);
 			Yii::app()->end();
 
 		}
+	}
+
+	public function actionDiagenose()
+	{
+		if(isset($_POST['IllnessType']))
+		{
+			if(!empty($_POST['IllnessType']['id']))
+			{
+				$model = new Treatment;
+				$medicine = new Item;
+				$illness_id=$_POST['IllnessType']['id'];
+				$data['medicine_selected_items'] = Yii::app()->treatmentCart->getMedicine();
+
+				$app_status = Appointment::model()->find('visit_id=:visit_id and status="Consultation"', array(':visit_id'=>$_POST['visit_id']));
+				if(!empty($app_status))
+				{
+					//echo "In consultant mode";
+					$transaction=$model->dbConnection->beginTransaction();
+					try{
+						Treatment::model()->save_diagnose($_POST['visit_id'],$illness_id,$_POST['doctor_id']);
+						$transaction->commit();
+
+						Yii::app()->user->setFlash('success', '<strong>Successful Saved! </strong>');
+					}catch (Exception $e){
+						$transaction->rollback();
+						Yii::app()->user->setFlash('success', '<strong>Process was rollback! </strong>Please contact administrator.');
+						//echo $e->getMessage();
+					}
+
+					Yii::app()->treatmentCart->emptyMedicine(); //clear session before add new
+
+					$tbl_medicine = Item::model()->get_tbl_medicine($_POST['visit_id']);
+					//print_r(Yii::app()->treatmentCart->getMedicine());
+					foreach ($tbl_medicine as $value) {
+						Yii::app()->treatmentCart->addMedicine($value['id'],$value['unit_price'],$value['quantity'],
+							$value['dosage'],$value['duration_id'],$value['frequency'],
+							$value['instruction_id'],$value['comment'],
+							$value['consuming_time_id']);
+					}
+
+					/*$data['visit_id']=$_POST['visit_id'];
+					$data['medicine']=$medicine;
+
+					if (Yii::app()->request->isAjaxRequest) {
+						$cs = Yii::app()->clientScript;
+						$cs->scriptMap = array(
+							'jquery.js' => false,
+							'bootstrap.js' => false,
+							'jquery.min.js' => false,
+							'bootstrap.min.js' => false,
+							'bootstrap.notify.js' => false,
+							'bootstrap.bootbox.min.js' => false,
+						);
+					}
+					Yii::app()->clientScript->scriptMap['jquery-ui.css'] = false;
+					Yii::app()->clientScript->scriptMap['box.css'] = false;
+
+					echo CJSON::encode(array(
+						'status' => 'success',
+						'div_medicine_form' => $this->renderPartial('//appointment/_select_medicine', $data, true, true),
+					));
+
+					Yii::app()->end();*/
+				}else{
+					Yii::app()->user->setFlash('success', '<strong>Oop!</strong> You are not in the consultation mode.');
+				}
+			}
+		}
+		//print_r($_POST);
 	}
 }

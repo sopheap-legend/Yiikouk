@@ -13,6 +13,7 @@ class Treatment extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+	#public $illness_id;
 	public function tableName()
 	{
 		return 'treatment';
@@ -203,5 +204,18 @@ class Treatment extends CActiveRecord
 		$name = '%' . $name . '%';
 		return Yii::app()->db->createCommand($sql)->queryAll(true, array(':name' => $name));
 
+	}
+
+	public function save_diagnose($visit_id,$illness_id,$doctor_id)
+	{
+		$exchange_rate = Yii::app()->session['exchange_rate'];
+
+		$cmd = Yii::app()->db->createCommand("CALL pro_save_diagnose(:visit_id,:illness_id,:doctor_id,:exchange_rate)");
+		$cmd->bindParam(":visit_id", $visit_id);
+		$cmd->bindParam(":illness_id", $illness_id);
+		$cmd->bindParam(":doctor_id", $doctor_id);
+		$cmd->bindParam(":exchange_rate", $exchange_rate);
+		$cmd->execute();
+		return true;
 	}
 }

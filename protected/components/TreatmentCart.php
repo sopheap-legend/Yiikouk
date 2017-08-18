@@ -102,7 +102,7 @@ class TreatmentCart extends CApplicationComponent
                     'instruction_id' => $instruction_id!='' ? $instruction_id:$model["instruction_id"],
                     'comment' => $comment,
                     'consuming_time_id' => $consuming_time_id,
-                    'cons_multiple' => $consuming->multiple,
+                    'cons_multiple' => @$consuming->multiple,
                     'measurement' => $model["measurement"],
                     'category_name' => $model["category_name"]
                 )
@@ -356,8 +356,8 @@ class TreatmentCart extends CApplicationComponent
         $this->setSession(Yii::app()->session);
         unset($this->session['cart']);
     }
-    
-    protected function emptyMedicine()
+
+    public function emptyMedicine()
     {
         $this->setSession(Yii::app()->session);
         unset($this->session['medicine']);

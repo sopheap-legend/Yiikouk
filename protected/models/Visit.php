@@ -176,11 +176,14 @@ class Visit extends CActiveRecord
         
         public function save_revisit($visit_id,$patient_id,$doctor_id)
         {
-            $cmd = Yii::app()->db->createCommand("CALL pro_save_revisit(:visit_id,:patient_id,:doctor_id)");
-            $cmd->bindParam(":visit_id", $visit_id);
-            $cmd->bindParam(":patient_id", $patient_id);
-            $cmd->bindParam(":doctor_id", $doctor_id);
-            $cmd->execute();
-            return true;
+			$exchange_rate = Yii::app()->session['exchange_rate'];
+
+			$cmd = Yii::app()->db->createCommand("CALL pro_save_revisit(:visit_id,:patient_id,:doctor_id,:exchange_rate)");
+			$cmd->bindParam(":visit_id", $visit_id);
+			$cmd->bindParam(":patient_id", $patient_id);
+			$cmd->bindParam(":doctor_id", $doctor_id);
+			$cmd->bindParam(":exchange_rate", $exchange_rate);
+			$cmd->execute();
+			return true;
         }
 }

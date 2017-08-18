@@ -11,7 +11,7 @@
         TbHtml::buttonGroup(
             array(
                 array('label' => Yii::t('app','Diagnose'),
-                    'url' => $this->createUrl('treatment/IllnessList',array()),
+                    'url' => $this->createUrl('treatment/IllnessList',array("visit_id" => $_GET['visit_id'],"doctor_id"=>$_GET['doctor_id'])),
                     'icon'=>'ace-icon fa fa-medkit',
                     'class' => 'update-dialog-open-link',
                     'data-update-dialog-title' => Yii::t('app', 'Illness Type'),
