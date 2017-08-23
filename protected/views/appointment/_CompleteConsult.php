@@ -401,5 +401,13 @@ Yii::app()->clientScript->registerScript('completedConsult', "
             }
         });
     });
+
+    $(document).ready(function () {
+        window.setTimeout(function() {
+            $(".alert").fadeTo(2000, 0).slideUp(2000, function(){
+                $(this).remove();
+            });
+        }, 2000);
+    });
     
 </script>  

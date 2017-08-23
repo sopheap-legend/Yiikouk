@@ -495,13 +495,13 @@ class AppointmentController extends Controller
                         if(!empty($chk_bill))
                         {
                             //----***Delete if bill already exists***----//
-                            if(!empty($treatment_selected))
-                            {
+                            /*if(!empty($treatment_selected))
+                            {*/
                                 BillDetail::model()->deleteAll(
                                     array('condition'=>'bill_id=:bill_id',
                                         'params'=>array(':bill_id'=>$chk_bill->bill_id))
                                 );
-                            }
+                            //}
 
                             foreach ($treatment_selected as $key => $value) {
                                 $treatment->saveTreatment($chk_bill->bill_id,$value['id'],$value['price']);

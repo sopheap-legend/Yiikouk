@@ -563,7 +563,13 @@ class Appointment extends CActiveRecord
             $search = $_GET['Appointment']['patient_name'];
             $cond = " and (lower(patient_name) like '%" . $search . "%' or lower(display_id) like  '%" . $search . "%')";
         } else {
-            $cond = " and visit_id not in (select visit_id from transaction_log)";
+            $cond = " and visit_id not in (select visit_id from transaction_log)
+                        and (visit_id in (SELECT visit_id FROM v_bill_payment)
+                             or visit_id in (SELECT visit_id FROM v_bloodtest_payment))";
+
+
+            /*$cond = " and visit_id not in (select visit_id from transaction_log)
+                        and visit_id in (SELECT visit_id FROM v_bloodtest_payment)";*/
             //$cond="";
 
         }
@@ -576,7 +582,7 @@ class Appointment extends CActiveRecord
                         WHERE appointment_date>=DATE_SUB(CURDATE(), INTERVAL 0 DAY)
                         and appointment_date<DATE_ADD(CURDATE(), INTERVAL 1 DAY)
                         /*and user_id=$userid*/ 
-                        and status in ('Waiting','Consultation')
+                        and status ='Consultation'
                         $cond
                         ORDER BY appointment_date
                     )cl,(SELECT @rownum:=0) r";
