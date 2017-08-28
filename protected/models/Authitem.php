@@ -103,251 +103,249 @@ class Authitem extends CActiveRecord
 		));
 	}
         
-        protected function getAuthItemName()
-        {
-            return '<span class="lbl">'. Yii::t('app',$this->description) . '</span>'; //Adding this to support ACE style need to revamp if YiiStrap Checbox support attribure class
-        }
-        
-        public function getAuthItemClient($match='client')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match",         // no quotes around :match
-                'params'    => array(':match' => "$match%"),  // Aha! Wildcards go here
-                'order'    => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list    = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-        public function getAuthItemItem($match='item')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match and type=0", // no quotes around :match
-                'params'    => array(':match' => "$match%"),
-                'order'    => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-        public function getAuthItemSale($match='sale')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match and type=0",         // no quotes around :match
-                'params'    => array(':match' => "$match%"),
-                'order'    => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list    = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-        public function getAuthItemReceiving($match='transaction')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match and type=0",  // no quotes around :match
-                'params'    => array(':match' => "$match%"),
-                'order'    => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list    = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-        public function getAuthItemReport($match='report')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match and type=0",         // no quotes around :match
-                'params'    => array(':match' => "$match%"),
-                'order'    => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list    = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-        public function getAuthItemEmployee($match='employee')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match and type=0",         // no quotes around :match
-                'params'    => array(':match' => "$match%"),
-                'order'    => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list    = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-        public function getAuthItemStore($match='store')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match and type=0",         // no quotes around :match
-                'params'    => array(':match' => "$match%"),
-                'order'    => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list    = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-        public function getAuthItemSupplier($match='supplier')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match and type=0",         // no quotes around :match
-                'params'    => array(':match' => "$match%"),
-                'order'    => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list    = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-        public function getAuthItemPayment($match='payment')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match and type=0",         // no quotes around :match
-                'params'    => array(':match' => "$match%"),
-                'order'    => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list    = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-         
-        public function getAuthItemSetting($match='setting')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match and type=0",         // no quotes around :match
-                'params'    => array(':match' => "$match%"),
-                'order'    => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list    = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-        public function getAuthItemInvoice($match='invoice')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match and type=0",         // no quotes around :match
-                'params'    => array(':match' => "$match%"),
-                'order'     => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list    = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-        public function getAuthItemTreatment($match='treatment')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match and type=0",         // no quotes around :match
-                'params'    => array(':match' => "$match%"),
-                'order'     => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list    = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-        public function getAuthAppointment($match='appointment')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match and type=0",         // no quotes around :match
-                'params'    => array(':match' => "$match%"),
-                'order'     => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list    = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-        public function getAuthcontact($match='contact')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match and type=0",         // no quotes around :match
-                'params'    => array(':match' => "$match%"),
-                'order'     => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list    = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-        public function getAuthPrescription($match='prescription')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match and type=0",         // no quotes around :match
-                'params'    => array(':match' => "$match%"),
-                'order'     => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list    = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-        public function getAuthlist($match='')
-        {
-            $match = addcslashes($match, '%_'); // escape LIKE's special characters
-            
-            $q = new CDbCriteria( array(
-                'condition' => "name LIKE :match and type=0",         // no quotes around :match
-                'params'    => array(':match' => "$match%"),
-                'order'     => "sort_order",
-            ) );
-            
-            $model = Authitem::model()->findAll($q);
-            $list    = CHtml::listData($model , 'name','AuthItemName');
-            return $list;
-        }
-        
-        
+    protected function getAuthItemName()
+    {
+        return '<span class="lbl">'. Yii::t('app',$this->description) . '</span>'; //Adding this to support ACE style need to revamp if YiiStrap Checbox support attribure class
+    }
+
+    public function getAuthItemClient($match='client')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match",         // no quotes around :match
+            'params'    => array(':match' => "$match%"),  // Aha! Wildcards go here
+            'order'    => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list    = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
+
+    public function getAuthItemItem($match='item')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match and type=0", // no quotes around :match
+            'params'    => array(':match' => "$match%"),
+            'order'    => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
+
+    public function getAuthItemSale($match='sale')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match and type=0",         // no quotes around :match
+            'params'    => array(':match' => "$match%"),
+            'order'    => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list    = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
+
+    public function getAuthItemReceiving($match='transaction')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match and type=0",  // no quotes around :match
+            'params'    => array(':match' => "$match%"),
+            'order'    => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list    = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
+
+    public function getAuthItemReport($match='report')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match and type=0",         // no quotes around :match
+            'params'    => array(':match' => "$match%"),
+            'order'    => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list    = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
+
+    public function getAuthItemEmployee($match='employee')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match and type=0",         // no quotes around :match
+            'params'    => array(':match' => "$match%"),
+            'order'    => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list    = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
+
+    public function getAuthItemStore($match='store')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match and type=0",         // no quotes around :match
+            'params'    => array(':match' => "$match%"),
+            'order'    => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list    = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
+
+    public function getAuthItemSupplier($match='supplier')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match and type=0",         // no quotes around :match
+            'params'    => array(':match' => "$match%"),
+            'order'    => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list    = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
+
+    public function getAuthItemPayment($match='payment')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match and type=0",         // no quotes around :match
+            'params'    => array(':match' => "$match%"),
+            'order'    => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list    = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
+
+
+    public function getAuthItemSetting($match='setting')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match and type=0",         // no quotes around :match
+            'params'    => array(':match' => "$match%"),
+            'order'    => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list    = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
+
+    public function getAuthItemInvoice($match='invoice')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match and type=0",         // no quotes around :match
+            'params'    => array(':match' => "$match%"),
+            'order'     => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list    = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
+
+    public function getAuthItemTreatment($match='treatment')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match and type=0",         // no quotes around :match
+            'params'    => array(':match' => "$match%"),
+            'order'     => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list    = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
+
+    public function getAuthAppointment($match='appointment')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match and type=0",         // no quotes around :match
+            'params'    => array(':match' => "$match%"),
+            'order'     => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list    = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
+
+    public function getAuthcontact($match='contact')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match and type=0",         // no quotes around :match
+            'params'    => array(':match' => "$match%"),
+            'order'     => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list    = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
+
+    public function getAuthPrescription($match='prescription')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match and type=0",         // no quotes around :match
+            'params'    => array(':match' => "$match%"),
+            'order'     => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list    = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
+
+    public function getAuthlist($match='')
+    {
+        $match = addcslashes($match, '%_'); // escape LIKE's special characters
+
+        $q = new CDbCriteria( array(
+            'condition' => "name LIKE :match and type=0",         // no quotes around :match
+            'params'    => array(':match' => "$match%"),
+            'order'     => "sort_order",
+        ) );
+
+        $model = Authitem::model()->findAll($q);
+        $list    = CHtml::listData($model , 'name','AuthItemName');
+        return $list;
+    }
 }

@@ -104,11 +104,23 @@ class Authassignment extends CActiveRecord
 		return parent::model($className);
 	}
         
-        public static function deleteAuthassignment($user_id)
-        {
-            $sql="DELETE FROM AuthAssignment WHERE userid=:user_id";
-            $command= Yii::app()->db->createCommand($sql);
-            $command->bindParam(":user_id", $user_id, PDO::PARAM_INT);
-            $command->execute(); 
-        }
+	public static function deleteAuthassignment($user_id)
+	{
+		$sql="DELETE FROM AuthAssignment WHERE userid=:user_id";
+		$command= Yii::app()->db->createCommand($sql);
+		$command->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+		$command->execute();
+	}
+
+	public function setGroupPermission($p_userid='',$group_id='')
+	{
+		$sql="insert into AuthAssignment(itemname,userid)
+              SELECT item,$p_userid userid FROM rbac_group_assignment 
+              WHERE group_id=:group_id
+              and item not in (select itemname from AuthAssignment where userid=:p_userid)";
+
+		$parameters = array(":group_id"=>$group_id,":p_userid"=>$p_userid);
+		//$parameters = array(":p_userid"=>$p_userid);
+		Yii::app()->db->createCommand($sql)->execute($parameters);
+	}
 }

@@ -92,7 +92,7 @@ class EmployeeController extends Controller
                             $user->employee_id = $model->id;
                             
                             if ($user->save()) {
-                                $assignitems = array('items', 'sales', 'employees', 
+                                /*$assignitems = array('items', 'sales', 'employees',
                                                     'customers', 'suppliers', 'store', 
                                                     'receivings', 'reports', 'invoices', 
                                                     'payments','treatments','appointments',
@@ -109,11 +109,33 @@ class EmployeeController extends Controller
 
                                             if (!$authassigment->save()) {
                                                 $transaction->rollback();
-                                                print_r($authassigment->errors);
+                                                //print_r($authassigment->errors);
+                                            }
+                                        }
+                                    }
+                                }*/
+
+                                $assignitems = array('items', 'employees','treatments',
+                                    'reports','settings','clinics');
+
+                                foreach ($assignitems as $assignitem) {
+                                    if (!empty($_POST['RbacUser'][$assignitem])) {
+                                        foreach ($_POST['RbacUser'][$assignitem] as $itemId) {
+                                            $authassigment = new Authassignment;
+                                            $authassigment->userid = $user->id;
+                                            $authassigment->itemname = $itemId;
+
+                                            if (!$authassigment->save()) {
+                                                $transaction->rollback();
+                                                //print_r($authassigment->errors);
                                             }
                                         }
                                     }
                                 }
+
+                                /*Update group permission*/
+                                Authassignment::model()->setGroupPermission($user->id,$user->group_id);
+
 
                                 $transaction->commit();
                                 Yii::app()->user->setFlash('success', '<strong>Well done!</strong> successfully saved.');
@@ -147,6 +169,11 @@ class EmployeeController extends Controller
 
             $model = $this->loadModel($id);
             $user = RbacUser::model()->find('employee_id=:employeeID', array(':employeeID' => (int) $id));
+            //$user->Password=$user->user_password;
+            //$user->PasswordConfirm=$user->user_password;
+
+            //print_r($user->Password);
+            //die();
         
             $criteria = new CDbCriteria;
             $criteria->condition = 'userid=:userId';
@@ -204,7 +231,7 @@ class EmployeeController extends Controller
                             // Delete all existing granted module 
                             Authassignment::model()->deleteAuthassignment($user->id);
 
-                            $assignitems = array('items', 'sales', 'employees', 
+                            /*$assignitems = array('items', 'sales', 'employees',
                                             'customers', 'suppliers', 'store', 
                                             'receivings', 'reports', 'invoices', 
                                             'payments','treatments','appointments',
@@ -221,7 +248,31 @@ class EmployeeController extends Controller
                                         $authassigment->save();
                                     }
                                 }
+                            }*/
+
+
+                            $assignitems = array('items', 'employees','treatments',
+                                'reports','settings','clinics');
+
+                            foreach ($assignitems as $assignitem) {
+                                if (!empty($_POST['RbacUser'][$assignitem])) {
+                                    foreach ($_POST['RbacUser'][$assignitem] as $itemId) {
+                                        $authassigment = new Authassignment;
+                                        $authassigment->userid = $user->id;
+                                        $authassigment->itemname = $itemId;
+                                        $authassigment->save();
+                                    }
+                                }
                             }
+
+
+                            $user->group_id=$_POST['RbacUser']['group_id'];
+                            //if($user->validate()) $user->save();
+                            //$user->group_id = $user->group_id;
+                            $user->update(array('group_id'));
+
+                            /*Update permission*/
+                            Authassignment::model()->setGroupPermission($user->id,$user->group_id);
 
                             $transaction->commit();
                             Yii::app()->user->setFlash(TbHtml::ALERT_COLOR_SUCCESS,'Employee : <strong>' . ucwords($model->last_name . ' ' .$model->first_name) . '</strong> have been saved successfully!' );

@@ -131,6 +131,7 @@ Yii::app()->clientScript->registerScript('search', "
                                     'class' => 'btn btn-xs btn-success',
                                     'title' => Yii::t('app', 'Consultation'),
                                 ),
+                                'visible'=>'Yii::app()->user->checkAccess("consultation.create")',
                             ),
                             //http://bit.ly/1bdSADp
                             'delete' => array(
@@ -141,7 +142,7 @@ Yii::app()->clientScript->registerScript('search', "
                                     'class' => 'btn btn-xs btn-warning',
                                     'title' => Yii::t('app', 'Cancel Consultation')
                                 ),
-
+                                'visible'=>'Yii::app()->user->checkAccess("consultation.delete")',
                             ),
                         ),
                     ),

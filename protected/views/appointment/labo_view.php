@@ -160,19 +160,22 @@
     </tbody>
     </table>    
 </div>
-<?php $chk_lab = TransactionLog::model()->find("visit_id=:visit_id",array('visit_id'=>$_GET['visit_id'])); ?>
-<?php if(empty($chk_lab)){?>
-<div class="col-sm-12">
-            <div class="form-actions" id="form-actions">
-                <?php echo TbHtml::submitButton(Yii::t('app', 'Save'), array(
-                    'color' => TbHtml::BUTTON_COLOR_PRIMARY,
-                    'size' => TbHtml::BUTTON_SIZE_SMALL,
-                    'id' => 'save-labo-form',
-                    'name' => 'Save_labo'
-                    //'size'=>TbHtml::BUTTON_SIZE_SMALL,
-                )); ?>
-            </div>
-</div> 
+<?php $chk_tran = TransactionLog::model()->find("visit_id=:visit_id and transaction_name=:transaction_name",array('visit_id'=>$_GET['visit_id'],'transaction_name'=>'Lab')); ?>
+<?php if(empty($chk_tran)){?>
+    <?php $chk_lab = VBloodtestPayment::model()->find("visit_id=:visit_id",array('visit_id'=>$_GET['visit_id'])); ?>
+    <?php if(!empty($chk_lab)){?>
+        <div class="col-sm-12">
+                    <div class="form-actions" id="form-actions">
+                        <?php echo TbHtml::submitButton(Yii::t('app', 'Save'), array(
+                            'color' => TbHtml::BUTTON_COLOR_PRIMARY,
+                            'size' => TbHtml::BUTTON_SIZE_SMALL,
+                            'id' => 'save-labo-form',
+                            'name' => 'Save_labo'
+                            //'size'=>TbHtml::BUTTON_SIZE_SMALL,
+                        )); ?>
+                    </div>
+        </div>
+    <?php } ?>
 <?php } ?>
 <?php $this->endWidget(); ?>
 <?php /*$box = $this->beginWidget('yiiwheels.widgets.box.WhBox', array(
