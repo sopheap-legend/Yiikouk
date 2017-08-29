@@ -178,10 +178,10 @@
     </div>
 </div>
 <?php $url = Yii::app()->createUrl('Appointment/labocheck/'); ?>
-<!--<script>
+<script>
     $(window).bind("load", function() {
         setTimeout(window.location.href='<?php echo $url; ?>',5000);
         window.print();
         return true;
     });
-</script>-->
+</script>
