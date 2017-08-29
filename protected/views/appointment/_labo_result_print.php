@@ -125,8 +125,8 @@
     </div>-->
     <div class="item-test">
         <div class="col-xs-12" align="middle">
-            <div style="font-size:large;"><strong>ប័ណ្ណវិភាគវេជ្ជសាស្រ្ត</strong></div>
-            <div style="font-size:large;">LAB ANALIZED SHEET</div>
+            <div style="font-family: 'Khmer OS Muol';font-size:16;"><strong>ប័ណ្ណវិភាគវេជ្ជសាស្រ្ត</strong></div>
+            <div style="font-family: 'Times New Roman';font-size:large;">LAB ANALIZED SHEET</div>
         </div>
     </div>
     <div class="item-test gift_receipt_element">
@@ -178,10 +178,10 @@
     </div>
 </div>
 <?php $url = Yii::app()->createUrl('Appointment/labocheck/'); ?>
-<script>
+<!--<script>
     $(window).bind("load", function() {
         setTimeout(window.location.href='<?php echo $url; ?>',5000);
         window.print();
         return true;
     });
-</script>
+</script>-->
