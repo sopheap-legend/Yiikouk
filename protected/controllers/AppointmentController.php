@@ -431,7 +431,8 @@ class AppointmentController extends Controller
             {
                 //$model->attributes=$_POST['Appointment'];
                 $json= CActiveForm::validate($visit);
-                if(!empty(json_decode($json))){
+                $json_decode = json_decode($json);
+                if(!empty($json_decode)){
                     echo $json;
                     Yii::app()->end();
                 }else{
