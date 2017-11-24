@@ -11,7 +11,7 @@ $this->pageTitle=Yii::app()->name . ' - Login';
                 <h1>
                     <i class="ace-icon fa fa-leaf green"></i>
                     <span class="red"><?php echo Yii::t('app','Clinic'); ?></span>
-                    <span class="white" id="id-text2"><?php echo Yii::t('app','Application'); ?></span>
+                    <span class="white" id="id-text2"><?php echo Yii::t('app','YiKuok'); ?></span>
                 </h1>
                 <h4 class="blue" id="id-company-text">&copy; Bakou System</h4>
             </div>
