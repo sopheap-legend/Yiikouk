@@ -340,6 +340,28 @@ class TreatmentCart extends CApplicationComponent
         //return 100;
     }
 
+
+    function getMode()
+    {
+        $this->setSession(Yii::app()->session);
+        if (!isset($this->session['recv_mode'])) {
+            $this->setMode('receive');
+        }
+        return $this->session['recv_mode'];
+    }
+
+    function setMode($mode)
+    {
+        $this->setSession(Yii::app()->session);
+        $this->session['recv_mode'] = $mode;
+    }
+
+    public function clearMode()
+    {
+        $this->setSession(Yii::app()->session);
+        unset($this->session['recv_mode']);
+    }
+
     public function deletePayment($visit_id)
     {
         $payments = $this->getPayments();
@@ -378,7 +400,11 @@ class TreatmentCart extends CApplicationComponent
         $this->emptyCart();
         $this->emptyMedicine();
         $this->emptyPayment();
+        $this->clearMode();
     }
+
+
+
 
 }
 

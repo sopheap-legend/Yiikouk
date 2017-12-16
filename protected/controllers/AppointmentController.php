@@ -331,7 +331,7 @@ class AppointmentController extends Controller
                 //$status='At Next Level Manager';
         }*/
         //$status=$this->renderPartial('_appointment_state',array('status'=>$data['status']),false,true);
-        if($data['status']=='Waiting'){
+        if($data['status']=='Waiting' || $data['status']=='Pending'){
             echo TbHtml::labelTb('Waiting',array('color' => TbHtml::LABEL_COLOR_WARNING));
         }elseif ($data['status']=='Complete') {
             echo TbHtml::labelTb('Complete',array('color' => TbHtml::LABEL_COLOR_SUCCESS));

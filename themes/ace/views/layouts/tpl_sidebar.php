@@ -50,6 +50,15 @@
                     ),
                 )
             ),
+            array('label'=>'<span class="menu-text">'. strtoupper(Yii::t('menu','Doctor Module')) . '</span>', 'icon'=>'menu-icon fa fa-user-md','url'=>Yii::app()->urlManager->createUrl('admitPatient'),
+                'active'=>$this->id=='admitPatient' || $this->id=='appointment' || strtolower($this->id)=='default' || $this->id=='location' ,
+                //'visible'=>Yii::app()->user->checkAccess('patient.manue'),
+                'items'=>array(
+                    array('label'=>Yii::t('menu','In-Patient'),'icon'=> '', 'url'=>Yii::app()->urlManager->createUrl('admitPatient/InPatient'), 'active'=>$this->id=='InPatient',
+                        //'visible'=>Yii::app()->user->checkAccess('contact.index') ||Yii::app()->user->checkAccess('contact.create') ||Yii::app()->user->checkAccess('contact.view')
+                    ),
+                )
+            ),
             array('label'=>'<span class="menu-text">' . strtoupper(Yii::t('app', 'Report')) .'</span>', 'icon'=>'menu-icon fa fa-signal', 'url'=>Yii::app()->urlManager->createUrl('report/reporttab'),
                 'active'=>$this->id =='report',
                 'visible'=> Yii::app()->user->checkAccess('report.index') || Yii::app()->user->checkAccess('invoice.index') || Yii::app()->user->checkAccess('invoice.print') || Yii::app()->user->checkAccess('invoice.delete') || Yii::app()->user->checkAccess('invoice.update') ,
@@ -107,6 +116,26 @@
                         'visible'=> Yii::app()->user->checkAccess('report.index')
                     ),
                 )),
+
+
+                array('label'=>'<span class="menu-text">'. strtoupper(Yii::t('menu','Room Info')) . '</span>', 'icon'=>'menu-icon fa fa-list','url'=>Yii::app()->urlManager->createUrl('roomMaster/RoomEnquiry'),
+                    'active'=>$this->id=='roomMaster'|| $this->id=='RoomEnquiry'|| $this->id=='CategoryRoom',
+                    //'visible'=>Yii::app()->user->checkAccess('patient.manue'),
+                    'items'=>array(
+                        array('label'=>Yii::t('menu','Room Enquiry'),'icon'=> '', 'url'=>Yii::app()->urlManager->createUrl('roomMaster/RoomEnquiry'), 'active'=>$this->id=='RoomEnquiry',
+                            //'visible'=>Yii::app()->user->checkAccess('contact.index') ||Yii::app()->user->checkAccess('contact.create') ||Yii::app()->user->checkAccess('contact.view')
+                        ),
+                        array('label'=>Yii::t('menu','Room Category'),'icon'=> '', 'url'=>Yii::app()->urlManager->createUrl('CategoryRoom/admin'),'active'=>$this->id .'/'. $this->action->id=='roomMaster',
+                            //'visible'=>Yii::app()->user->checkAccess('appointment.index')
+                        ),
+                        array('label'=>Yii::t('menu','Room Master'),'icon'=> '', 'url'=>Yii::app()->urlManager->createUrl('roomMaster/admin'),'active'=>$this->id .'/'. $this->action->id=='roomMaster',
+                            //'visible'=>Yii::app()->user->checkAccess('consultation.view')
+                        ),
+                        array('label'=>Yii::t('menu','Room Bed Master'),'icon'=> '', 'url'=>Yii::app()->urlManager->createUrl('bedMaster/admin'), 'active'=>$this->id=='roomMaster',
+                            //'visible'=>Yii::app()->user->checkAccess('prescription.view')
+                        ),
+                    )
+                ),
 
             array('label'=>'<span class="menu-text">' . strtoupper(Yii::t('menu','Transaction')) .'</span>', 'icon'=>'menu-icon fa fa-desktop','url'=>Yii::app()->urlManager->createUrl('receivingItem/index'),'active'=>$this->id .'/'. $this->action->id=='receivingItem/index',
                 'visible'=> Yii::app()->user->checkAccess('transaction.manue'),

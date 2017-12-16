@@ -107,7 +107,7 @@
                 ),*/
                 array(
                     'class' => 'bootstrap.widgets.TbButtonColumn',
-                    'template' => '<div class="hidden-sm hidden-xs btn-group">{delete}{update}{history}{appointment}</div>',
+                    'template' => '<div class="hidden-sm hidden-xs btn-group">{delete}{update}{history}{appointment}{ipd}</div>',
                     'htmlOptions' => array('class' => 'nowrap'),
                     'buttons' => array(
                         /*'view' => array(
@@ -147,6 +147,16 @@
                             'options' => array(
                                 'class' => 'btn btn-xs btn-success',
                                 'title' => 'Make Appointment',
+                            ),
+                            'visible' => 'Yii::app()->user->checkAccess("contact.update")'
+                        ),
+                        'ipd' => array(
+                            'label'=>'IPD Register',
+                            //'icon' => 'ace-icon fa fa-calendar',
+                            'url' => 'Yii::app()->createUrl("admitPatient/create/",array("patient_id"=>$data->patient_id))',
+                            'options' => array(
+                                'class' => 'btn btn-xs btn-success',
+                                //'title' => 'Make Appointment',
                             ),
                             'visible' => 'Yii::app()->user->checkAccess("contact.update")'
                         ),
