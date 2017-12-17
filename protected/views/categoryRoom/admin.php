@@ -23,19 +23,19 @@
 		);
 
 		Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
-});
-$('.search-form form').submit(function(){
-	$('#treatment-grid').yiiGridView('update', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");
+		$('.search-button').click(function(){
+			$('.search-form').toggle();
+			return false;
+		});
+		$('.search-form form').submit(function(){
+			$('#treatment-grid').yiiGridView('update', {
+				data: $(this).serialize()
+			});
+			return false;
+		});
+		");
 		?>
-		<?php echo TbHtml::linkButton(Yii::t('app','Search'),array('class'=>'search-button btn','size'=>TbHtml::BUTTON_SIZE_SMALL,'icon'=>'ace-icon fa fa-search',)); ?>
+		<?php //echo TbHtml::linkButton(Yii::t('app','Search'),array('class'=>'search-button btn','size'=>TbHtml::BUTTON_SIZE_SMALL,'icon'=>'ace-icon fa fa-search',)); ?>
 		<div class="search-form" style="display:none">
 			<?php $this->renderPartial('_search',array(
 				'model'=>$model,

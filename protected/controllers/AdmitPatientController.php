@@ -292,6 +292,8 @@ class AdmitPatientController extends Controller
 			$headerInfo='Vital Sign';
 		}elseif ($obj=='Diagnosis'){
 			$headerInfo='Diagnosis';
+		}elseif ($obj=='IPDPrescription'){
+			$headerInfo='IPD Prescription';
 		}else{
 			$headerInfo='General Information';
 		}
@@ -305,6 +307,8 @@ class AdmitPatientController extends Controller
 
 		$this->performAjaxValidation($my_obj,$popup_form);
 
+		$userid = Yii::app()->user->getId();
+
 		$transaction=$my_obj->dbConnection->beginTransaction();
 
 		try{
@@ -314,6 +318,17 @@ class AdmitPatientController extends Controller
 				{
 					$my_obj->attributes=$_POST[$obj];
 					$my_obj->admit_id=@$admit_id;
+
+
+					if( $my_obj->hasAttribute('prepare_by') )
+					{
+						$my_obj->prepare_by=$userid;
+					}
+
+					if( $my_obj->hasAttribute('evt_date') )
+					{
+						$my_obj->evt_date=date('Y-m-d h:i:s');
+					}
 
 					if($my_obj->save());
 					$transaction->commit();

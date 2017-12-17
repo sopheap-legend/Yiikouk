@@ -26,7 +26,10 @@
                         'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
                         //'visible'=> Yii::app()->user->checkAccess('report.index')
                     ),
-                    array('label'=>'<span class="menu-text">' . Yii::t('menu', 'Medication') . '</span>', 'icon'=>'', 'url'=>"#", 'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
+                    array('label'=>'<span class="menu-text">' . Yii::t('menu', 'Medication') . '</span>',
+                        'icon'=>'',
+                        'url'=>Yii::app()->urlManager->createUrl('admitPatient/IpdTreatment?treat_mode=medication&admit_id='.$admit_id.'&patient_id='.$patient_id.'&obj=IPDPrescription&getPartial=_ipd_prescription'),
+                        'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
                         //'visible'=> Yii::app()->user->checkAccess('report.index')
                     ),
                     array('label'=>'<span class="menu-text">' . Yii::t('menu', 'Complaint') . '</span>', 'icon'=>'', 'url'=>"#", 'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
