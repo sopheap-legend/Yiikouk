@@ -51,10 +51,10 @@
                 )
             ),
             array('label'=>'<span class="menu-text">'. strtoupper(Yii::t('menu','Doctor Module')) . '</span>', 'icon'=>'menu-icon fa fa-user-md','url'=>Yii::app()->urlManager->createUrl('admitPatient'),
-                'active'=>$this->id=='admitPatient' || $this->id=='appointment' || strtolower($this->id)=='default' || $this->id=='location' ,
+                'active'=>$this->id=='admitPatient' || $this->id=='InPatient' || strtolower($this->id)=='default' || $this->id=='location' ,
                 //'visible'=>Yii::app()->user->checkAccess('patient.manue'),
                 'items'=>array(
-                    array('label'=>Yii::t('menu','In-Patient'),'icon'=> '', 'url'=>Yii::app()->urlManager->createUrl('admitPatient/InPatient'), 'active'=>$this->id=='InPatient',
+                    array('label'=>Yii::t('menu','In-Patient'),'icon'=> '', 'url'=>Yii::app()->urlManager->createUrl('admitPatient/InPatient'), 'active'=>$this->id .'/'. $this->action->id=='admitPatient/InPatient',
                         //'visible'=>Yii::app()->user->checkAccess('contact.index') ||Yii::app()->user->checkAccess('contact.create') ||Yii::app()->user->checkAccess('contact.view')
                     ),
                 )
@@ -119,19 +119,19 @@
 
 
                 array('label'=>'<span class="menu-text">'. strtoupper(Yii::t('menu','Room Info')) . '</span>', 'icon'=>'menu-icon fa fa-list','url'=>Yii::app()->urlManager->createUrl('roomMaster/RoomEnquiry'),
-                    'active'=>$this->id=='roomMaster'|| $this->id=='RoomEnquiry'|| $this->id=='CategoryRoom',
+                    'active'=>$this->id=='roomMaster' ||  $this->id=='categoryRoom' || $this->id=='bedMaster',
                     //'visible'=>Yii::app()->user->checkAccess('patient.manue'),
                     'items'=>array(
-                        array('label'=>Yii::t('menu','Room Enquiry'),'icon'=> '', 'url'=>Yii::app()->urlManager->createUrl('roomMaster/RoomEnquiry'), 'active'=>$this->id=='RoomEnquiry',
+                        array('label'=>Yii::t('menu','Room Enquiry'),'icon'=> '', 'url'=>Yii::app()->urlManager->createUrl('roomMaster/RoomEnquiry'), 'active'=>$this->id .'/'. $this->action->id=='roomMaster/RoomEnquiry',
                             //'visible'=>Yii::app()->user->checkAccess('contact.index') ||Yii::app()->user->checkAccess('contact.create') ||Yii::app()->user->checkAccess('contact.view')
                         ),
-                        array('label'=>Yii::t('menu','Room Category'),'icon'=> '', 'url'=>Yii::app()->urlManager->createUrl('CategoryRoom/admin'),'active'=>$this->id .'/'. $this->action->id=='roomMaster',
+                        array('label'=>Yii::t('menu','Room Category'),'icon'=> '', 'url'=>Yii::app()->urlManager->createUrl('CategoryRoom/admin'), 'active'=>$this->id .'/'. $this->action->id=='categoryRoom/admin',
                             //'visible'=>Yii::app()->user->checkAccess('appointment.index')
                         ),
-                        array('label'=>Yii::t('menu','Room Master'),'icon'=> '', 'url'=>Yii::app()->urlManager->createUrl('roomMaster/admin'),'active'=>$this->id .'/'. $this->action->id=='roomMaster',
+                        array('label'=>Yii::t('menu','Room Master'),'icon'=> '', 'url'=>Yii::app()->urlManager->createUrl('roomMaster/admin'),'active'=>$this->id .'/'. $this->action->id=='roomMaster/admin',
                             //'visible'=>Yii::app()->user->checkAccess('consultation.view')
                         ),
-                        array('label'=>Yii::t('menu','Room Bed Master'),'icon'=> '', 'url'=>Yii::app()->urlManager->createUrl('bedMaster/admin'), 'active'=>$this->id=='roomMaster',
+                        array('label'=>Yii::t('menu','Room Bed Master'),'icon'=> '', 'url'=>Yii::app()->urlManager->createUrl('bedMaster/admin'),'active'=>$this->id .'/'. $this->action->id=='bedMaster/admin',
                             //'visible'=>Yii::app()->user->checkAccess('prescription.view')
                         ),
                     )

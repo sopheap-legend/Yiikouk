@@ -27,7 +27,7 @@
             <?php $this->widget('bootstrap.widgets.TbAlert'); ?>
         <?php endif; ?>
         <?php $this->widget('yiiwheels.widgets.grid.WhGridView', array(
-            'id' => 'waiting-queue',
+            'id' => 'room-enquiry',
             'dataProvider' => IpdTblRoom::model()->roomEnquiry(),
             'htmlOptions' => array('class' => 'table-responsive panel'),
             'template' => "{items}",
@@ -59,12 +59,8 @@
                     'header' => 'Total Bed',
                 ),
                 array(
-                    'name' => 'Occupied',
-                    'header' => 'Occupied Bed',
-                ),
-                array(
-                    'name' => 'UnOccupied',
-                    'header' => 'UnOccupied Bed',
+                    'name' => 'status',
+                    'header' => 'Status',
                 ),
                 array(
                     'class'=>'bootstrap.widgets.TbButtonColumn',
@@ -73,7 +69,7 @@
                     'buttons' => array(
                         'detail' => array(
                             'label' => 'Detail',
-                            'url'=>'Yii::app()->createUrl("/roomMaster/Update/",array("id"=>$data["id"]))',
+                            //'url'=>'Yii::app()->createUrl("/roomMaster/Update/",array("id"=>$data["id"]))',
                             //'icon' => 'ace-icon fa fa-edit',
                             'options' => array(
                                 'class'=>'btn btn-xs btn-info',

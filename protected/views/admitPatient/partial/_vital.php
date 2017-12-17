@@ -3,6 +3,7 @@
         display: flex !important;
     }
 </style>
+
 <div class="row" id="contact">
     <div class="col-xs-12 widget-container-col ui-sortable">
         <?php
@@ -16,10 +17,11 @@
                 )
             );
         ?>
-        <?php $this->widget('bootstrap.widgets.TbGridView',array(
+        <?php $this->widget('yiiwheels.widgets.grid.WhGridView',array(
             'id'=>'vital-grid',
-            'dataProvider'=>$model_vital->search(),
+            'dataProvider'=>$model_vital->getVital(),
             'htmlOptions'=>array('class'=>'table-responsive panel'),
+            'template' => "{items}",
             'columns'=>array(
                 array(
                     'name' => 'id',
@@ -30,6 +32,11 @@
                 array(
                     'name' => 'admit_id',
                     'header' => 'Admit ID',
+                    'headerHtmlOptions' => array('style' => 'display:none'),
+                    'htmlOptions' => array('style' => 'display:none'),
+                ),
+                array(
+                    'name' => 'patient_id',
                     'headerHtmlOptions' => array('style' => 'display:none'),
                     'htmlOptions' => array('style' => 'display:none'),
                 ),
@@ -59,7 +66,7 @@
                     'buttons' => array(
                         'update' => array(
                             'label'=>'Update',
-                            'url'=>'Yii::app()->createUrl("admitPatient/update/",array("id"=>$data->id,"admit_id"=>1,"patient_id"=>8,"obj"=>"Vital","popup_form"=>"vital-form","treat_mod"=>"vital","getPartial"=>"_vital","getPopupPartial"=>"_vital_popup"))',
+                            'url'=>'Yii::app()->createUrl("admitPatient/update/",array("id"=>$data["id"],"admit_id"=>$data["admit_id"],"patient_id"=>$data["patient_id"],"obj"=>"Vital","popup_form"=>"vital-form","treat_mod"=>"vital","getPartial"=>"_vital","getPopupPartial"=>"_vital_popup"))',
                             'icon' => 'ace-icon fa fa-edit',
                             'options' => array(
                                 'class'=>'btn btn-xs btn-info vital-update',
@@ -70,7 +77,7 @@
                         ),
                         'delete' => array(
                             'label'=>'Delete',
-                            'url'=>'Yii::app()->createUrl("admitPatient/delete/",array("id"=>$data->id,"obj"=>"Vital"))',
+                            'url'=>'Yii::app()->createUrl("admitPatient/delete/",array("id"=>$data["id"],"obj"=>"Vital"))',
                             'options' => array(
                                 'class'=>'btn btn-xs btn-danger',
                             ),

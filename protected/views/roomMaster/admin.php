@@ -52,7 +52,7 @@
 			<?php $this->widget('bootstrap.widgets.TbAlert'); ?>
 		<?php endif; ?>
 		<?php $this->widget('yiiwheels.widgets.grid.WhGridView', array(
-			'id' => 'waiting-queue',
+			'id' => 'room-master',
 			'dataProvider' => IpdTblRoom::model()->roomMaster(),
 			'htmlOptions' => array('class' => 'table-responsive panel'),
 			'template' => "{items}",
@@ -85,20 +85,20 @@
 				),
 				array(
 					'class'=>'bootstrap.widgets.TbButtonColumn',
-					'template'=>'<div class="hidden-sm hidden-xs btn-group">{edit}{cancel}</div>',
+					'template'=>'<div class="hidden-sm hidden-xs btn-group">{update}{delete}</div>',
 					'htmlOptions'=>array('class'=>'nowrap'),
 					'buttons' => array(
-						'edit' => array(
+						'update' => array(
 							'label' => 'Update',
-							'url'=>'Yii::app()->createUrl("/roomMaster/Update/",array("id"=>$data["room_id"]))',
+							'url'=>'Yii::app()->createUrl("/roomMaster/update/",array("id"=>$data["room_id"]))',
 							'icon' => 'ace-icon fa fa-edit',
 							'options' => array(
 								'class'=>'btn btn-xs btn-info',
 							),
 						),
-						'cancel' => array(
+						'delete' => array(
 							'label'=>'Delete',
-							'url'=>'Yii::app()->createUrl("/roomMaster/Deleted/",array("id"=>$data["room_id"]))',
+							'url'=>'Yii::app()->createUrl("/roomMaster/delete/",array("id"=>$data["room_id"]))',
 							'options' => array(
 								'class'=>'btn btn-xs btn-danger',
 							),

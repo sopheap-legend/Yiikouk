@@ -88,6 +88,28 @@ class Diagnosis extends CActiveRecord
 		));
 	}
 
+	public function getDiagnosis()
+	{
+		$admit_id = $_GET['admit_id'];
+		$patient_id = $_GET['patient_id'];
+
+		$sql="SELECT t1.id,t1.admit_id,t2.patient_id,
+			(SELECT diagnosis FROM ipd_tbl_conf_Diagnosis t3 WHERE t1.diagnosis_id=t3.id) diagnosis,remarks
+			FROM ipd_tbl_Diagnosis t1
+			INNER JOIN ipd_tbl_AdmitPatient t2 ON t1.admit_id=t2.id
+			AND t2.patient_id=$patient_id
+			AND t2.status='1'
+			WHERE t1.admit_id=$admit_id";
+
+		return new CSqlDataProvider($sql, array(
+			'sort' => array(
+				'attributes' => array(
+					'id', 'diagnosis',
+				)
+			),
+		));
+	}
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!

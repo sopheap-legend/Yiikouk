@@ -81,7 +81,7 @@ class AdmitPatientController extends Controller
 			$model->bed_id=$_POST['IpdTblBed']['id'];
 			$model->patient_id=$_POST['patient_id'];
 			$model->status=1;
-			$model->date_admit=date('Y-m-d');
+			$model->date_admit=date('Y-m-d h:i:s');
 			//$model_room->attributes=$_POST['AdmitPatient'];
 			if($model->save())
 				$this->redirect(array('admin','id'=>$model->id));

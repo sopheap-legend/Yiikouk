@@ -30,7 +30,7 @@ class RoomMasterController extends Controller
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view','admin',
 								'update','RoomEnquiry','RoomChecking',
-								'RoomBooking'
+								'RoomBooking','Delete'
 								),
 				'users'=>array('*'),
 			),

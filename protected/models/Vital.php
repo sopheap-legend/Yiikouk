@@ -108,6 +108,26 @@ class Vital extends CActiveRecord
 		));
 	}
 
+	public function getVital()
+	{
+		$admit_id = $_GET['admit_id'];
+		$patient_id = $_GET['patient_id'];
+
+		$sql="SELECT t1.id,admit_id,t2.patient_id,pulse_rate,blood_pressure,temperature,respiration,height,weight FROM ipd_tbl_Vital t1
+		INNER JOIN ipd_tbl_AdmitPatient t2 ON t1.admit_id=t2.id
+		AND t2.patient_id=$patient_id
+		AND t2.status='1'
+		WHERE t1.admit_id=$admit_id";
+
+		return new CSqlDataProvider($sql, array(
+			'sort' => array(
+				'attributes' => array(
+					'id', 'display_id', 'patient_name'
+				)
+			),
+		));
+	}
+
 	/*public function vital_validate($attribute, $params)
 	{
 		if (isset($_POST['vital_submit'])) {

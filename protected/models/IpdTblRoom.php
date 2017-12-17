@@ -111,35 +111,32 @@ class IpdTblRoom extends CActiveRecord
 
 	public function roomEnquiry()
 	{
-		if (!empty($_POST['category_room_id'])){
+		$room_status=@$_POST['room_status'];
+		if(!empty($_POST['category_room_id']) && !empty($_POST['room_status']))
+		{
+			$cond="where catg_room_id=".$_POST['category_room_id'].' and status='."'$room_status'";
+		}elseif(!empty($_POST['category_room_id'])){
 			$cond="where catg_room_id=".$_POST['category_room_id'];
-		}/*elseif (!empty($_POST['room_status'])){
-			$cond="where status=".$_POST['room_status'];
-		}*/else{
+		}elseif (!empty($_POST['room_status'])){
+			$cond="where status="."'$room_status'";
+		}else{
 			$cond='';
 		}
 
-		$sql="SELECT id,bed_no,room_no,floor,room_type,total_bed,status,
-			SUM(CASE WHEN STATUS='Occupied' THEN nBed else 0 END) Occupied,
-			SUM(CASE WHEN STATUS='UnOccupied' THEN nBed else 0 END) UnOccupied
+		$sql="SELECT id,bed_no,room_no,floor,room_type,total_bed,status
 			FROM(
 				SELECT t1.id,t1.bed_no,t2.room_no,t2.floor,t3.room_type,t2.total_bed,t2.catg_room_id,
 				CASE
-					WHEN t4.bed_id IS NOT NULL THEN 'Occupied'
+					WHEN t4.bed_id = t1.id THEN 'Occupied'
 					ELSE 'UnOccupied'
-				END status,COUNT(*) nBed
+				END STATUS
 				FROM ipd_tbl_Bed t1
 				INNER JOIN ipd_tbl_Room t2 ON t1.room_id=t2.id
 				INNER JOIN ipd_tbl_CategoryRoom t3 ON t2.catg_room_id=t3.id
-				LEFT JOIN ipd_tbl_AdmitPatient t4 ON t1.id=t4.bed_id AND t4.status='1'
-				GROUP BY t3.id,t1.bed_no,t2.room_no,t2.floor,t3.room_type,t2.total_bed,
-				CASE
-					WHEN t4.bed_id IS NOT NULL THEN 'Occupied'
-					ELSE 'UnOccupied'
-				END
+				LEFT JOIN ipd_tbl_AdmitPatient t4 ON t1.id=t4.bed_id AND t4.status='1'				
 			)AS l1
 			$cond
-			GROUP BY id,bed_no,room_no,floor,room_type,total_bed";
+			GROUP BY id,bed_no,room_no,floor,room_type,total_bed,status";
 
 		return new CSqlDataProvider($sql, array(
 			'sort' => array(
