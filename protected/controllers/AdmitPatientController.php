@@ -294,6 +294,14 @@ class AdmitPatientController extends Controller
 			$headerInfo='Diagnosis';
 		}elseif ($obj=='IPDPrescription'){
 			$headerInfo='IPD Prescription';
+		}elseif ($obj=='Complaint'){
+			$headerInfo='Complaint';
+		}elseif ($obj=='ProgressNote'){
+			$headerInfo='Progress Note';
+		}elseif ($obj=='IntakeRecord'){
+			$headerInfo='Intake Record';
+		}elseif ($obj=='OutputRecord'){
+			$headerInfo='Output Record';
 		}else{
 			$headerInfo='General Information';
 		}

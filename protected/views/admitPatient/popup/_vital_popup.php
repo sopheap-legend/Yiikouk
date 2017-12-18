@@ -10,4 +10,3 @@
 <?php echo $form->textFieldControlGroup($model_popup,'respiration',array('span'=>5,'append' => 'min','placeholder'=>'Respiration')); ?>
 <?php echo $form->textFieldControlGroup($model_popup,'height',array('span'=>5,'append' => 'Cm','placeholder'=>'Height')); ?>
 <?php echo $form->textFieldControlGroup($model_popup,'weight',array('span'=>5,'append' => 'Kg','placeholder'=>'Weight')); ?>
-

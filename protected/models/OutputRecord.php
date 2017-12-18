@@ -1,23 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "ipd_tbl_Diagnosis".
+ * This is the model class for table "ipd_tbl_OutputRecord".
  *
- * The followings are the available columns in table 'ipd_tbl_Diagnosis':
+ * The followings are the available columns in table 'ipd_tbl_OutputRecord':
  * @property integer $id
  * @property integer $admit_id
- * @property string $diagnosis_id
- * @property string $remarks
+ * @property double $urine
+ * @property double $feaces
+ * @property double $respitation
+ * @property double $skin
+ * @property integer $prepare_by
  * @property string $evt_date
  */
-class Diagnosis extends CActiveRecord
+class OutputRecord extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'ipd_tbl_Diagnosis';
+		return 'ipd_tbl_OutputRecord';
 	}
 
 	/**
@@ -28,12 +31,12 @@ class Diagnosis extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('admit_id, diagnosis_id, evt_date', 'required'),
-			array('admit_id', 'numerical', 'integerOnly'=>true),
-			array('diagnosis_id, remarks', 'length', 'max'=>50),
+			array('admit_id,urine, feaces, respitation, skin, prepare_by, evt_date', 'required'),
+			array('admit_id, prepare_by', 'numerical', 'integerOnly'=>true),
+			array('urine, feaces, respitation, skin', 'numerical'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, admit_id, diagnosis_id, remarks, evt_date', 'safe', 'on'=>'search'),
+			array('id, admit_id, urine, feaces, respitation, skin, prepare_by, evt_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,8 +59,11 @@ class Diagnosis extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'admit_id' => 'Admit',
-			'diagnosis_id' => 'Diagnosis',
-			'remarks' => 'Remarks',
+			'urine' => 'Urine',
+			'feaces' => 'Feaces',
+			'respitation' => 'Respitation',
+			'skin' => 'Skin',
+			'prepare_by' => 'Prepare By',
 			'evt_date' => 'Evt Date',
 		);
 	}
@@ -82,8 +88,11 @@ class Diagnosis extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('admit_id',$this->admit_id);
-		$criteria->compare('diagnosis_id',$this->diagnosis_id,true);
-		$criteria->compare('remarks',$this->remarks,true);
+		$criteria->compare('urine',$this->urine);
+		$criteria->compare('feaces',$this->feaces);
+		$criteria->compare('respitation',$this->respitation);
+		$criteria->compare('skin',$this->skin);
+		$criteria->compare('prepare_by',$this->prepare_by);
 		$criteria->compare('evt_date',$this->evt_date,true);
 
 		return new CActiveDataProvider($this, array(
@@ -91,23 +100,23 @@ class Diagnosis extends CActiveRecord
 		));
 	}
 
-	public function getDiagnosis()
+	public function getOutputRecord()
 	{
 		$admit_id = $_GET['admit_id'];
 		$patient_id = $_GET['patient_id'];
 
-		$sql="SELECT t1.id,t1.admit_id,t2.patient_id,
-			(SELECT diagnosis FROM ipd_tbl_conf_Diagnosis t3 WHERE t1.diagnosis_id=t3.id) diagnosis,remarks,evt_date
-			FROM ipd_tbl_Diagnosis t1
-			INNER JOIN ipd_tbl_AdmitPatient t2 ON t1.admit_id=t2.id
-			AND t2.patient_id=$patient_id
-			AND t2.status='1'
-			WHERE t1.admit_id=$admit_id";
+		$sql="SELECT t1.id,admit_id,t2.patient_id,urine,feaces,respitation,skin,
+			(SELECT doctor_name FROM vw_user_info t4 WHERE t1.prepare_by=t4.userid) prepare_by,evt_date
+					FROM ipd_tbl_OutputRecord t1
+					INNER JOIN ipd_tbl_AdmitPatient t2 ON t1.admit_id=t2.id
+					AND t2.patient_id=$patient_id
+					AND t2.status='1'
+					WHERE t1.admit_id=$admit_id";
 
 		return new CSqlDataProvider($sql, array(
 			'sort' => array(
 				'attributes' => array(
-					'id', 'diagnosis',
+					'id',
 				)
 			),
 		));
@@ -117,7 +126,7 @@ class Diagnosis extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Diagnosis the static model class
+	 * @return OutputRecord the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

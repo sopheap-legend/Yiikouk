@@ -18,7 +18,7 @@
         ?>
         <?php $this->widget('yiiwheels.widgets.grid.WhGridView',array(
             'id'=>'vital-grid',
-            'dataProvider'=>$model_vital->getDiagnosis(),
+            'dataProvider'=>$model_vital->getComplaint(),
             'htmlOptions'=>array('class'=>'table-responsive panel'),
             'template' => "{items}",
             'columns'=>array(
@@ -39,8 +39,8 @@
                     'headerHtmlOptions' => array('style' => 'display:none'),
                     'htmlOptions' => array('style' => 'display:none'),
                 ),
-                array('name'=>'diagnosis',
-                    'header'=> 'Diagnosis',
+                array('name'=>'complaint',
+                    'header'=> 'Complaint',
                     //'result'=>''
                 ),
                 array('name'=>'remarks',
@@ -56,7 +56,7 @@
                     'buttons' => array(
                         'update' => array(
                             'label'=>'Update',
-                            'url'=>'Yii::app()->createUrl("admitPatient/update/",array("id"=>$data["id"],"admit_id"=>$data["admit_id"],"patient_id"=>$data["patient_id"],"obj"=>"Diagnosis","popup_form"=>"vital-form","treat_mod"=>"diagnosis","getPartial"=>"_diagnosis","getPopupPartial"=>"_diagnosis_popup"))',
+                            'url'=>'Yii::app()->createUrl("admitPatient/update/",array("id"=>$data["id"],"admit_id"=>$data["admit_id"],"patient_id"=>$data["patient_id"],"obj"=>"Complaint","popup_form"=>"vital-form","treat_mod"=>"diagnosis","getPartial"=>"_complaint","getPopupPartial"=>"_complaint_popup"))',
                             'icon' => 'ace-icon fa fa-edit',
                             'options' => array(
                                 'class'=>'btn btn-xs btn-info vital-update',
@@ -67,7 +67,7 @@
                         ),
                         'delete' => array(
                             'label'=>'Delete',
-                            'url'=>'Yii::app()->createUrl("admitPatient/delete/",array("id"=>$data["id"],"obj"=>"Diagnosis"))',
+                            'url'=>'Yii::app()->createUrl("admitPatient/delete/",array("id"=>$data["id"],"obj"=>"Complaint"))',
                             'options' => array(
                                 'class'=>'btn btn-xs btn-danger',
                             ),
@@ -84,12 +84,12 @@
     echo $this->renderpartial("popup/_modal_popup", array(
         'model' => $model,
         'model_vital'=>$model_vital,
-        'obj'=>'Diagnosis',
-        'getPopupPartial'=>'_diagnosis_popup',
-        'getPartial'=>'_diagnosis',
+        'obj'=>'Complaint',
+        'getPopupPartial'=>'_complaint_popup',
+        'getPartial'=>'_complaint',
         'admit_id' => @$model_patient_info['id'],
         'patient_id'=>@$model_patient_info['patient_id'],
-        'header_popup'=>'Diagnosis',
+        'header_popup'=>'Complaint',
         'method'=>'CreateTreatmentCatg',
     ),true, false);
     ?>
