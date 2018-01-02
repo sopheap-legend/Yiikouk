@@ -138,6 +138,21 @@ class AdmitPatientController extends Controller
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again');
 		}*/
 
+		if($obj=='IPRoomTransfer')
+		{
+			$data = $this->reload_update($model->admit_id);
+			$model->category_id=$data['model_category_room']->id;
+			//$model->floor=$data['floor_per_category']->floor;
+			$model->room_id=4;
+			//foreach ($data['floor_per_category'] as $val)
+				//$model->floor=1;
+				//$model->room_id=2;
+			//echo $val['floor'];
+			//print_r($data);
+			//echo $data['model_room']->id;
+			//die();
+		}
+
 		if (Yii::app()->request->isAjaxRequest) {
 			$cs = Yii::app()->clientScript;
 			$cs->scriptMap = array(
@@ -164,7 +179,7 @@ class AdmitPatientController extends Controller
 					'getPartial'=>$getPartial,
 					'admit_id' => @$model_patient_info['id'],
 					'patient_id'=>@$model_patient_info['patient_id'],
-					'header_popup'=>$obj,
+					'header_popup'=>$this->getHeaderPopupInfo($obj),
 					'method'=>'Update'
 				),true, $outputJs),
 			));
@@ -302,6 +317,16 @@ class AdmitPatientController extends Controller
 			$headerInfo='Intake Record';
 		}elseif ($obj=='OutputRecord'){
 			$headerInfo='Output Record';
+		}elseif ($obj=='NurseProgessNote'){
+			$headerInfo='Nurse Progess Note';
+		}elseif ($obj=='BedSideProcedure'){
+			$headerInfo='Bed Side Procedure';
+		}elseif ($obj=='IPRoomTransfer'){
+			$headerInfo='IP Room Transfer';
+		}elseif ($obj=='OperationTheater'){
+			$headerInfo='Operation Theater';
+		}elseif ($obj=='PatientHistory'){
+			$headerInfo='Patient History';
 		}else{
 			$headerInfo='General Information';
 		}
@@ -339,6 +364,12 @@ class AdmitPatientController extends Controller
 					}
 
 					if($my_obj->save());
+					if($obj=='IPRoomTransfer')
+					{
+						$admit_update = AdmitPatient::model()->findByPk($admit_id);
+						$admit_update->bed_id = $_POST[$obj]['bed_id'];
+						$admit_update->save();
+					}
 					$transaction->commit();
 					$this->redirect(array('admitPatient/IpdTreatment',
 											'treat_mode'=>$treat_mod,
@@ -355,6 +386,32 @@ class AdmitPatientController extends Controller
 			Yii::app()->user->setFlash('error', '<strong>Process was rollback! </strong>Please contact administrator.');
 			//echo $e->getMessage();
 		}
+	}
+
+	public function reload_update($admit_id=null)
+	{
+		$data['model_admit'] = AdmitPatient::model()->findByPk($admit_id);
+		$data['model_bed'] = IpdTblBed::model()->findByPk($data['model_admit']->bed_id);
+		$data['model_room'] = IpdTblRoom::model()->findByPk($data['model_bed']->room_id);
+		$data['model_category_room'] = IpdTblCategoryRoom::model()->findByPk($data['model_room']->catg_room_id);
+
+		$data['room_per_floor'] = IpdTblRoom::model()->findall('catg_room_id=:catg_room_id and floor=:floor',
+			array(
+				':catg_room_id'=>(int) $data['model_room']->catg_room_id,
+				':floor' => $data['model_room']->floor
+			)
+		);
+
+		$data['floor_per_category']=IpdTblBed::model()->getFloorByCatg((int) $data['model_room']->catg_room_id);
+
+		return $data;
+	}
+
+	public function reload_create($admit_id=null)
+	{
+		$data['model_admit'] = new AdmitPatient;
+		$data['model_bed'] = new IpdTblBed;
+		$data['model_room'] = new IpdTblRoom;
 	}
 
 	/**

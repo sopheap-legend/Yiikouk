@@ -28,7 +28,7 @@ class BedMasterController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','admin','Dynamicroom','Dynamicfloor'),
+				'actions'=>array('index','view','admin','Dynamicroom','Dynamicfloor','Dynamicbed'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -173,7 +173,12 @@ class BedMasterController extends Controller
 		{
 			$data=$get_room;
 		}else{
-			$data=IpdTblBed::model()->getFloorByCatg((int) $_POST['IpdTblCategoryRoom']['id']);
+			if(isset($_POST['IpdTblCategoryRoom']))
+			{
+				$data=IpdTblBed::model()->getFloorByCatg((int) $_POST['IpdTblCategoryRoom']['id']);
+			}elseif(isset($_POST['IPRoomTransfer'])){
+				$data=IpdTblBed::model()->getFloorByCatg((int) $_POST['IPRoomTransfer']['category_id']);
+			}
 		}
 
 		$data=CHtml::listData($data,'floor','floor');
@@ -194,14 +199,53 @@ class BedMasterController extends Controller
 	public function actionDynamicroom()
 	{
 		//print_r($_POST);
+		if(isset($_POST['IpdTblCategoryRoom']))
+		{
+			$CategoryRoom = $_POST['IpdTblCategoryRoom']['id'];
+			$room = $_POST['IpdTblRoom']['floor'];
+		}elseif(isset($_POST['IPRoomTransfer'])){
+			$CategoryRoom = $_POST['IPRoomTransfer']['category_id'];
+			$room = $_POST['IPRoomTransfer']['floor'];
+		}else{
+			$CategoryRoom="";
+			$room="";
+		}
+
 		$data=IpdTblRoom::model()->findAll('catg_room_id=:catg_room_id and floor=:floor',
-			array(':catg_room_id'=>(int) $_POST['IpdTblCategoryRoom']['id'],':floor' => $_POST['IpdTblRoom']['floor'])
+			array(':catg_room_id'=>(int) $CategoryRoom,':floor' => $room)
 			);
 
 		$data=CHtml::listData($data,'id','room_no');
 
 		$static = array(
 			'0'     => Yii::t('fim','Select Room'),
+		);
+
+		$data = $static+$data; //Update a subscription for select box
+
+		foreach($data as $value=>$name)
+		{
+			echo CHtml::tag('option',
+				array('value'=>$value),CHtml::encode($name),true);
+		}
+	}
+
+	public function actionDynamicbed()
+	{
+		//print_r($_POST);
+		if(isset($_POST['IPRoomTransfer']))
+		{
+			$room_id=$_POST['IPRoomTransfer']['room_id'];
+		}
+
+		$data=IpdTblBed::model()->findAll('room_id=:room_id',
+			array(':room_id'=>(int) $room_id,)
+		);
+
+		$data=CHtml::listData($data,'id','bed_no');
+
+		$static = array(
+			'0'     => Yii::t('fim','Select Bed'),
 		);
 
 		$data = $static+$data; //Update a subscription for select box

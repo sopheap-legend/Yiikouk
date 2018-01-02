@@ -908,6 +908,7 @@ class AppointmentController extends Controller
     public function actionGetTreatment() {
         if (isset($_GET['term'])) {
             $term = trim($_GET['term']);
+            //print_r($_GET);
             $ret['results'] = Treatment::getTreatment($term); //PHP Example · ivaynberg/select2  http://bit.ly/10FNaXD got stuck serveral hoursss :|
             echo CJSON::encode($ret);
             Yii::app()->end();

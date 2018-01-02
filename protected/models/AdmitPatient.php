@@ -119,6 +119,17 @@ class AdmitPatient extends CActiveRecord
 		return $cmd->queryall();
 	}
 
+	public function getAssistant()
+	{
+		$sql="SELECT t2.id,CONCAT(IFNULL(first_name,''),' ',IFNULL(last_name,'')) assistant_name
+			FROM employee t1
+			INNER JOIN rbac_user t2 ON t1.id=t2.employee_id
+			AND t2.group_id in (2,3)";
+
+		$cmd = Yii::app()->db->createCommand($sql);
+		return $cmd->queryall();
+	}
+
 	public function getIpdPatientInfo($admit_id=null,$patient_id=null)
 	{
 		$sql="SELECT t1.id,t1.patient_id,date_admit,doctor_id,

@@ -56,19 +56,35 @@
                         'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
                         //'visible'=> Yii::app()->user->checkAccess('report.index')
                     ),
-                    array('label'=>'<span class="menu-text">' . Yii::t('menu', 'Nurse Progress Note') . '</span>', 'icon'=>'', 'url'=>"#", 'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
+                    array('label'=>'<span class="menu-text">' . Yii::t('menu', 'Nurse Progress Note') . '</span>',
+                        'icon'=>'',
+                        'url'=>Yii::app()->urlManager->createUrl('admitPatient/IpdTreatment?treat_mode=nurse_progess_note&admit_id='.$admit_id.'&patient_id='.$patient_id.'&obj=NurseProgessNote&getPartial=_nurse_progess_note'),
+                        'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
                         //'visible'=> Yii::app()->user->checkAccess('report.index')
                     ),
-                    array('label'=>'<span class="menu-text">' . Yii::t('menu', 'IP Room Transfer') . '</span>', 'icon'=>'', 'url'=>"#", 'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
+
+                    array('label'=>'<span class="menu-text">' . Yii::t('menu', 'IP Room Transfer') . '</span>',
+                        'icon'=>'',
+                        'url'=>Yii::app()->urlManager->createUrl('admitPatient/IpdTreatment?treat_mode=ip_room_transfer&admit_id='.$admit_id.'&patient_id='.$patient_id.'&obj=IPRoomTransfer&getPartial=_ip_room_transfer'),
+                        'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
                         //'visible'=> Yii::app()->user->checkAccess('report.index')
                     ),
-                    array('label'=>'<span class="menu-text">' . Yii::t('menu', 'Bed Side Procedure') . '</span>', 'icon'=>'', 'url'=>"#", 'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
+                    array('label'=>'<span class="menu-text">' . Yii::t('menu', 'Bed Side Procedure') . '</span>',
+                        'icon'=>'',
+                        'url'=>Yii::app()->urlManager->createUrl('admitPatient/IpdTreatment?treat_mode=sed_side_procedure&admit_id='.$admit_id.'&patient_id='.$patient_id.'&obj=BedSideProcedure&getPartial=_bed_side_procedure'),
+                        'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
                         //'visible'=> Yii::app()->user->checkAccess('report.index')
                     ),
-                    array('label'=>'<span class="menu-text">' . Yii::t('menu', 'Operation Theater') . '</span>', 'icon'=>'', 'url'=>"#", 'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
+                    array('label'=>'<span class="menu-text">' . Yii::t('menu', 'Operation Theater') . '</span>',
+                        'icon'=>'',
+                        'url'=>Yii::app()->urlManager->createUrl('admitPatient/IpdTreatment?treat_mode=operation_theater&admit_id='.$admit_id.'&patient_id='.$patient_id.'&obj=OperationTheater&getPartial=_operation_theater'),
+                        'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
                         //'visible'=> Yii::app()->user->checkAccess('report.index')
                     ),
-                    array('label'=>'<span class="menu-text">' . Yii::t('menu', 'Patient History') . '</span>', 'icon'=>'', 'url'=>"#", 'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
+                    array('label'=>'<span class="menu-text">' . Yii::t('menu', 'Patient History') . '</span>',
+                        'icon'=>'',
+                        'url'=>Yii::app()->urlManager->createUrl('admitPatient/IpdTreatment?treat_mode=patient_history&admit_id='.$admit_id.'&patient_id='.$patient_id.'&obj=PatientHistory&getPartial=_patient_history'),
+                        'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
                         //'visible'=> Yii::app()->user->checkAccess('report.index')
                     ),
                     array('label'=>'<span class="menu-text">' . Yii::t('menu', 'Discharge Summary') . '</span>', 'icon'=>'', 'url'=>"#", 'active'=>$this->id .'/'. $this->action->id=='dashboard/view'?true:false,
