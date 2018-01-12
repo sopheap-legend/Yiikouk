@@ -84,7 +84,7 @@ class AdmitPatientController extends Controller
 			$model->date_admit=date('Y-m-d h:i:s');
 			//$model_room->attributes=$_POST['AdmitPatient'];
 			if($model->save())
-				$this->redirect(array('admin','id'=>$model->id));
+				$this->redirect(array('contact/admin','id'=>$model->id));
 		}
 
 		$this->render('create',array(
@@ -363,13 +363,29 @@ class AdmitPatientController extends Controller
 						$my_obj->evt_date=date('Y-m-d h:i:s');
 					}
 
-					if($my_obj->save());
 					if($obj=='IPRoomTransfer')
 					{
+						$criteria=new CDbCriteria;
+						$criteria->select='max(evt_date) AS evt_date';
+						$criteria->condition='admit_id=:admit_id';
+						$criteria->params=array(':admit_id'=>$admit_id);
+						$row = $my_obj->model()->find($criteria);
+
+						$last_evt = $row['evt_date'];
+
+						$last_row = $my_obj->model()->find('admit_id=:admit_id and evt_date=:evt_date',array(':admit_id'=>$admit_id,':evt_date'=>$last_evt));;
+
+						//Update last day of patient stay in the room
+						$evt_update = $obj::model()->findByPk($last_row->id);
+						$evt_update->last_evt = date('Y-m-d h:i:s');
+						$evt_update->save();
+
+						//Update current bed to admit table
 						$admit_update = AdmitPatient::model()->findByPk($admit_id);
 						$admit_update->bed_id = $_POST[$obj]['bed_id'];
 						$admit_update->save();
 					}
+					if($my_obj->save());
 					$transaction->commit();
 					$this->redirect(array('admitPatient/IpdTreatment',
 											'treat_mode'=>$treat_mod,

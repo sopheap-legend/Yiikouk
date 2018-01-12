@@ -141,16 +141,17 @@ class IPDBill extends CActiveRecord
 	public static function GetIPDTreatment($name = '')
 	{
 		$type=$_GET['myType'];
-		$admit_id=1;
+		$admit_id=$_GET['admit_id'];
 		$patient_id=$_GET['myPatient'];
 		// Recommended: Secure Way to Write SQL in Yii
-		$sql = "SELECT id,particular_item AS text 
+		$sql = "SELECT item_id id,particular_item AS text 
                     FROM vw_item_treatment 
                     WHERE (particular_item LIKE :name)
                     and category=:type
                     and admit_id=:admit_id
                     and patient_id=:patient_id
-                    and status='1'";
+                    and status='1'
+                    and (admit_id,item_id,category) not in (SELECT admit_id,item_id,category_type FROM vw_ipd_bill_info)";
 
 		$name = '%' . $name . '%';
 		return Yii::app()->db->createCommand($sql)->queryAll(true, array(':name' => $name,':type'=>$type,':admit_id'=>$admit_id,':patient_id'=>$patient_id));

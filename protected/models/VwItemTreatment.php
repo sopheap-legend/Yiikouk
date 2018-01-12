@@ -1,29 +1,31 @@
 <?php
 
 /**
- * This is the model class for table "ipd_tbl_IPRoomTransfer".
+ * This is the model class for table "vw_item_treatment".
  *
- * The followings are the available columns in table 'ipd_tbl_IPRoomTransfer':
- * @property integer $id
+ * The followings are the available columns in table 'vw_item_treatment':
+ * @property string $id
+ * @property string $status
  * @property integer $admit_id
- * @property integer $bed_id
- * @property string $reason
- * @property integer $prepare_by
+ * @property double $price
+ * @property integer $patient_id
+ * @property integer $item_id
+ * @property string $category
+ * @property string $particular_item
+ * @property integer $qty
+ * @property string $note
+ * @property string $prepare_by
  * @property string $evt_date
  */
-class IPRoomTransfer extends CActiveRecord
+class VwItemTreatment extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'ipd_tbl_IPRoomTransfer';
+		return 'vw_item_treatment';
 	}
-
-	public $category_id;
-	public $floor;
-	public $room_id;
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -33,12 +35,17 @@ class IPRoomTransfer extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('admit_id, bed_id, prepare_by, evt_date', 'required'),
-			array('admit_id, bed_id, prepare_by', 'numerical', 'integerOnly'=>true),
-			array('reason', 'length', 'max'=>100),
+			array('admit_id, patient_id, item_id, qty', 'numerical', 'integerOnly'=>true),
+			array('price', 'numerical'),
+			array('id', 'length', 'max'=>22),
+			array('status', 'length', 'max'=>20),
+			array('category', 'length', 'max'=>10),
+			array('particular_item, note', 'length', 'max'=>50),
+			array('prepare_by', 'length', 'max'=>101),
+			array('evt_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, admit_id, bed_id, reason, prepare_by, evt_date,last_evt', 'safe', 'on'=>'search'),
+			array('id, status, admit_id, price, patient_id, item_id, category, particular_item, qty, note, prepare_by, evt_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -60,14 +67,17 @@ class IPRoomTransfer extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'status' => 'Status',
 			'admit_id' => 'Admit',
-			'bed_id' => 'Bed',
-			'reason' => 'Reason',
+			'price' => 'Price',
+			'patient_id' => 'Patient',
+			'item_id' => 'Item',
+			'category' => 'Category',
+			'particular_item' => 'Particular Item',
+			'qty' => 'Qty',
+			'note' => 'Note',
 			'prepare_by' => 'Prepare By',
 			'evt_date' => 'Evt Date',
-			'last_evt' => 'Last Event',
-			'category_id'=>'Category ID',
-			'room_id'=>'Room;'
 		);
 	}
 
@@ -89,11 +99,17 @@ class IPRoomTransfer extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
+		$criteria->compare('id',$this->id,true);
+		$criteria->compare('status',$this->status,true);
 		$criteria->compare('admit_id',$this->admit_id);
-		$criteria->compare('bed_id',$this->bed_id);
-		$criteria->compare('reason',$this->reason,true);
-		$criteria->compare('prepare_by',$this->prepare_by);
+		$criteria->compare('price',$this->price);
+		$criteria->compare('patient_id',$this->patient_id);
+		$criteria->compare('item_id',$this->item_id);
+		$criteria->compare('category',$this->category,true);
+		$criteria->compare('particular_item',$this->particular_item,true);
+		$criteria->compare('qty',$this->qty);
+		$criteria->compare('note',$this->note,true);
+		$criteria->compare('prepare_by',$this->prepare_by,true);
 		$criteria->compare('evt_date',$this->evt_date,true);
 
 		return new CActiveDataProvider($this, array(
@@ -101,37 +117,11 @@ class IPRoomTransfer extends CActiveRecord
 		));
 	}
 
-	public function getIPRoomTransfer()
-	{
-		$admit_id = $_GET['admit_id'];
-		$patient_id = $_GET['patient_id'];
-
-		$sql="SELECT t1.id,admit_id,t2.patient_id,
-			(select room_type from vw_bed_master t3 where t3.id=t1.bed_id) room_type,
-			(select floor from vw_bed_master t3 where t3.id=t1.bed_id) floor,
-			(select room_no from vw_bed_master t3 where t3.id=t1.bed_id) room_no,
-			(select bed_no from vw_bed_master t3 where t3.id=t1.bed_id) bed_no,reason,
-			(SELECT doctor_name FROM vw_user_info t4 WHERE t1.prepare_by=t4.userid) prepare_by,evt_date
-					FROM ipd_tbl_IPRoomTransfer t1
-					INNER JOIN ipd_tbl_AdmitPatient t2 ON t1.admit_id=t2.id
-					AND t2.patient_id=$patient_id
-					AND t2.status='1'
-					WHERE t1.admit_id=$admit_id";
-
-		return new CSqlDataProvider($sql, array(
-			'sort' => array(
-				'attributes' => array(
-					'id',
-				)
-			),
-		));
-	}
-
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return IPRoomTransfer the static model class
+	 * @return VwItemTreatment the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

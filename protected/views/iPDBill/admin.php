@@ -2,15 +2,15 @@
 	<?php
 		$this->breadcrumbs=array(
 			Yii::t('menu','Bill')=>array('iPDBill/admin'),
-			Yii::t('menu','Bill List'),
+			Yii::t('menu','Patient List'),
 		);
 	?>
 
 	<?php $box = $this->beginWidget('yiiwheels.widgets.box.WhBox', array(
-		'title' => Yii::t('app','List of Bill'),
+		'title' => Yii::t('app','List of Patient'),
 		'headerIcon' => 'ace-icon fa fa-credit-card',
 		'htmlHeaderOptions'=>array('class'=>'widget-header-flat widget-header-small'),
-		'headerButtons' => array(
+		/*'headerButtons' => array(
 			TbHtml::buttonGroup(
 				array(
 					array('label' => Yii::t('app','Particular Bill'),
@@ -34,39 +34,74 @@
 					)
 				)
 			),
-		),
+		),*/
 	));?>
 
+	<?php $this->widget('yiiwheels.widgets.grid.WhGridView', array(
+		'id' => 'room_result',
+		'dataProvider' => AdmitPatient::model()->getInPatient(),
+		'htmlOptions' => array('class' => 'table-responsive panel'),
+		'template' => "{items}",
+		'columns' => array(
+			array(
+				'name' => 'id',
+				'header' => 'ID',
+				'headerHtmlOptions' => array('style' => 'display:none'),
+				'htmlOptions' => array('style' => 'display:none'),
+			),
+			array(
+				'name' => 'admit_id',
+				'headerHtmlOptions' => array('style' => 'display:none'),
+				'htmlOptions' => array('style' => 'display:none'),
+			),
+			array(
+				'name' => 'patient_id',
+				'headerHtmlOptions' => array('style' => 'display:none'),
+				'htmlOptions' => array('style' => 'display:none'),
+			),
+			array(
+				'name' => 'doctor_id',
+				'headerHtmlOptions' => array('style' => 'display:none'),
+				'htmlOptions' => array('style' => 'display:none'),
+			),
+			array('name'=>'patient_name',
+				'header'=> 'Patient Name',
+			),
 
-
-
-	<?php /*$this->widget('yiiwheels.widgets.grid.WhGridView',array(
-		'id'=>'category-grid',
-		//'fixedHeader' => true,
-		'headerOffset' => 40,
-		'responsiveTable' => true,
-		'dataProvider'=>$model->search(),
-		//'filter'=>$model,
-		'columns'=>array(
-			'id',
-			'name',
-			'created_date',
-			'modified_date',
-			array('class'=>'bootstrap.widgets.TbButtonColumn',
-				//'template'=>'{update}{delete}{payment}',
+			array('name'=>'display_id',
+				'header'=> 'Patient ID',
+			),
+			array('name'=>'status',
+				'header'=> 'Status',
+			),
+			array(
+				'class'=>'bootstrap.widgets.TbButtonColumn',
+				'template'=>'<div class="hidden-sm hidden-xs btn-group">{Particular Bill}{One Bill}</div>',
+				'htmlOptions'=>array('class'=>'nowrap'),
 				'buttons' => array(
-					'update' => array(
-						'click' => 'updateDialogOpen',
-						'label'=>'Update Category',
+					'Particular Bill' => array(
+						//'label' => 'Book',
+						//'url'=>'Yii::app()->createUrl("/roomMaster/RoomBooking/",array("id"=>$data["id"]))',
+						'url' =>'Yii::app()->createUrl("iPDBill/create",array("patient_id"=>$data["patient_id"],"admit_id"=>$data["admit_id"],"myPatial"=>"_select_particular_bill"))',
+						//'icon' => 'ace-icon fa fa-book',
 						'options' => array(
-							'data-update-dialog-title' => Yii::t( 'app', 'form.category._form.header_update' ),
-							'data-refresh-grid-id'=>'category-grid',
+							'class'=>'btn btn-xs btn-primary',
+							//'id'=>'room_booking'
+						),
+					),
+					'One Bill' => array(
+						//'label' => 'Book',
+						//'url' =>'Yii::app()->createUrl("iPDBill/create",array("patient_id"=>$data["patient_id"],"admit_id"=>$data["admit_id"],"myPatial"=>"_select_particular_bill"))',
+						//'icon' => 'ace-icon fa fa-book',
+						'options' => array(
+							'class'=>'btn btn-xs btn-success',
+							//'id'=>'room_booking'
 						),
 					),
 				),
 			),
 		),
-	));*/ ?>
+	)); ?>
 
 	<?php $this->endWidget(); ?>
 

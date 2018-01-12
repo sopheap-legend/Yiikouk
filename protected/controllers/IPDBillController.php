@@ -28,7 +28,9 @@ class IPDBillController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','admin','GetPatient','InitPatient','GetIPDTreatment','InitIPDTreatment'),
+				'actions'=>array('index','admin','GetPatient',
+					'InitPatient','GetIPDTreatment','InitIPDTreatment',
+					'AddBillItem','DeleteItem','SaveIPDBill'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -60,22 +62,50 @@ class IPDBillController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($patient_id=null,$admit_id=null,$myPatial='')
 	{
-		$data = $this->reload_create();
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		/*if(isset($_POST['IPDBill']))
+		$data = $this->reload_create($patient_id,$admit_id);
+		$data['patial']=$myPatial;
+		$data['particular_item_selected'] = Yii::app()->iPDTreatmentCart->getParticularItem();
+		if(isset($_POST['btn-submit']))
 		{
-			$data['IPDBill']->attributes=$_POST['IPDBill'];
-			if($data['IPDBill']->save())
-				$this->redirect(array('view','id'=>$data['IPDBill']->id));
-		}*/
+			$this->actionSaveIPDBill($patient_id,$admit_id,$data);
+			Yii::app()->iPDTreatmentCart->emptyIPDBill();
+			$this->redirect(array('IPDBill/admin'));
+		}
 
 		$this->render('create',array(
 			'data'=>$data,
 		));
+	}
+
+	public function actionSaveIPDBill($patient_id=null,$admit_id=null,$data=null)
+	{
+		$particular_item_selected = Yii::app()->iPDTreatmentCart->getParticularItem();
+		if(!empty($particular_item_selected))
+		{
+			$data['IPDBill']->admit_id = $admit_id;
+			$data['IPDBill']->bill_date = date('Y-m-d');
+			$data['IPDBill']->exchange_rate = Yii::app()->session['exchange_rate'];
+			$data['IPDBill']->prepare_by= Yii::app()->user->getId();
+			$data['IPDBill']->status=Yii::app()->params['save_ipdbill'];
+			if($data['IPDBill']->save())
+			{
+				$billID = $data['IPDBill']->id;
+				foreach ($particular_item_selected as $key => $value)
+				{
+					if($value['patient_id']==$patient_id && $value['admit_id']==$admit_id)
+					{
+						$iPDBillDetail = new IPDBillDetail;
+						$iPDBillDetail->bill_id = $billID;
+						$iPDBillDetail->category_type = $value['category'];
+						$iPDBillDetail->item_id = $value['id'];
+						$iPDBillDetail->amount = $value['price'] * $value['qty'];
+						$iPDBillDetail->save();
+					}
+				}
+			}
+		}
 	}
 
 	public function actionGetPatient() {
@@ -172,10 +202,86 @@ class IPDBillController extends Controller
 		));
 	}
 
-	protected function reload_create()
+	public function actionAddBillItem($patient_id=null,$admit_id=null)
+	{
+		$data = $this->reload_create($patient_id,$admit_id);
+		$item_id = $_POST['item_id'];
+		$category = $_POST['category'];
+
+		if ( Yii::app()->request->isPostRequest && Yii::app()->request->isAjaxRequest )
+		{
+			Yii::app()->iPDTreatmentCart->addParticularItem($item_id,$category,1,'',$patient_id,$admit_id);
+			$data['particular_item_selected'] = Yii::app()->iPDTreatmentCart->getParticularItem();
+
+			if (Yii::app()->request->isAjaxRequest)
+			{
+				$cs = Yii::app()->clientScript;
+				$cs->scriptMap = array(
+					'jquery.js' => false,
+					'bootstrap.js' => false,
+					'jquery.min.js' => false,
+					'bootstrap.min.js' => false,
+					'bootstrap.notify.js' => false,
+					'bootstrap.bootbox.min.js' => false,
+				);
+			}
+
+			Yii::app()->clientScript->scriptMap['jquery-ui.css'] = false;
+			Yii::app()->clientScript->scriptMap['box.css'] = false;
+			//print_r($data['particular_item_selected']);
+			echo CJSON::encode(array(
+				'status' => 'success',
+				'div_particular_item_form' => $this->renderPartial('partial/_bill_item', array('data'=>$data),true, true),
+			));
+
+			Yii::app()->end();
+		} else {
+			throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+		}
+	}
+
+	public function actionDeleteItem($particular_id,$admit_id=null,$patient_id=null)
+	{
+		$data = $this->reload_create($patient_id,$admit_id);
+
+		if ( Yii::app()->request->isPostRequest && Yii::app()->request->isAjaxRequest )
+		{
+			Yii::app()->iPDTreatmentCart->deleteParticularItem($particular_id);
+			$data['particular_item_selected']= Yii::app()->iPDTreatmentCart->getParticularItem();
+
+			if (Yii::app()->request->isAjaxRequest) {
+				$cs = Yii::app()->clientScript;
+				$cs->scriptMap = array(
+					'jquery.js' => false,
+					'bootstrap.js' => false,
+					'jquery.min.js' => false,
+					'bootstrap.min.js' => false,
+					'bootstrap.notify.js' => false,
+					'bootstrap.bootbox.min.js' => false,
+				);
+			}
+			Yii::app()->clientScript->scriptMap['jquery-ui.css'] = false;
+			Yii::app()->clientScript->scriptMap['box.css'] = false;
+			echo CJSON::encode(array(
+				'status' => 'success',
+				'div_particular_item_form' => $this->renderPartial('partial/_bill_item', array('data'=>$data),true, true),
+			));
+
+			Yii::app()->end();
+		} else {
+			throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+		}
+	}
+
+	protected function reload_create($patient_id=null,$admit_id=null)
 	{
 		$data['IPDBill'] = new IPDBill;
-		$data['PatientInfo'] = new VSearchPatient;
+		$data['IPDBillDetail'] = new IPDBillDetail;
+		$data['patient_id']=$patient_id;
+		$data['admit_id']=$admit_id;
+		//$data['PatientInfo'] = new VSearchPatient;
+		$data['PatientInfo'] = VSearchPatient::model()->find('patient_id=:patient_id',array(':patient_id'=>$patient_id));
+		$data['VwItemTreatment'] = new VwItemTreatment;
 		$data['Patient'] = new Patient;
 
 		return $data;
